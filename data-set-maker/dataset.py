@@ -37,7 +37,7 @@ def collect_papers(search_str: str, amount: int) -> None:
                 break
             except ConnectionResetError as e:
                 print("connection reset by peer")
-                # TODO: wait before retry - might be better with circute breaker patterne or its like.
+                # TODO: wait before retry - might be better with circuit breaker pattern or its like.
                 time.sleep(5)
 
 
