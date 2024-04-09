@@ -1,6 +1,7 @@
 import time
 import arxiv
 import click
+import os
 from tqdm import tqdm
 from urllib.error import HTTPError
 
@@ -22,12 +23,16 @@ def collect_papers(search_str: str, amount: int) -> None:
         sort_by=arxiv.SortCriterion.SubmittedDate
     )
 
+    # Create data dir if it does not exist
+    path = f"../data/arxiv_pdfs_{search_str.replace(' ', '_')}"
+    os.makedirs(path, exist_ok=True)
+    
+
     for result in tqdm(client.results(search)):
         while True:
             try:
                 print(f"Downloading: {result.title}")
-                result.download_pdf(dirpath=f"./data/arxiv_pdfs_{search_str.replace(' ', '_')}",
-                                    filename=f"{result.title.replace(' ', '_')}")
+                result.download_pdf(dirpath=path)
                 break
             except FileNotFoundError:
                 print("File not found")
